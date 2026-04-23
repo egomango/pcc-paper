@@ -1,0 +1,33 @@
+---
+---
+<div class="col-canvas">
+  <svg id="matrix-svg" class="matrix" aria-hidden="true"></svg>
+  <table id="matrix-table" class="sr-only"></table>
+  <div id="matrix-a11y" class="sr-only" aria-live="polite"></div>
+</div>
+
+<style>
+  .matrix { width: 100%; height: 100%; max-width: 620px; max-height: 80vh; }
+</style>
+
+<script>
+  import { STATES } from '~/scripts/states';
+  import { createMatrix, applyState } from '~/scripts/matrix';
+  import { renderA11yTable } from '~/scripts/a11y-table';
+  import { observeSections } from '~/scripts/scroll-observer';
+
+  const svg = document.getElementById('matrix-svg') as unknown as SVGSVGElement | null;
+  const table = document.getElementById('matrix-table') as HTMLTableElement | null;
+  const a11y = document.getElementById('matrix-a11y');
+
+  if (svg) {
+    createMatrix(svg, STATES[0]);
+    if (table) renderA11yTable(table, STATES[0]);
+    observeSections((index) => {
+      const state = STATES[index] ?? STATES[0];
+      applyState(svg, state);
+      if (table) renderA11yTable(table, state);
+      if (a11y) a11y.textContent = state.caption || state.sectionKey;
+    });
+  }
+</script>
