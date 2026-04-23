@@ -1,0 +1,23 @@
+---
+interface Props {
+  stateIndex: number;
+}
+const { stateIndex } = Astro.props;
+---
+<svg class="inline-canvas matrix-inline" role="img" data-state-index={stateIndex}></svg>
+
+<style>
+  .matrix-inline { width: 100%; max-width: 560px; height: auto; display: none; }
+  @media (max-width: 1023px) { .matrix-inline { display: block; } }
+</style>
+
+<script>
+  import { STATES } from '~/scripts/states';
+  import { createMatrix, applyState } from '~/scripts/matrix';
+  document.querySelectorAll<SVGSVGElement>('.matrix-inline').forEach((svg) => {
+    const i = Number(svg.getAttribute('data-state-index') ?? '0');
+    const state = STATES[i] ?? STATES[0];
+    createMatrix(svg, state);
+    applyState(svg, state, { animate: false });
+  });
+</script>
