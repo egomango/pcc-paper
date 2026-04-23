@@ -22,6 +22,7 @@ export default defineConfig({
   site: 'https://pcc-paper.prozensky.com',
   output: 'static',
   build: { inlineStylesheets: 'auto' },
+  devToolbar: { enabled: false },
   markdown: {
     remarkPlugins: [remarkDirective, remarkDecomposition],
   },
