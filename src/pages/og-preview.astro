@@ -1,0 +1,34 @@
+---
+---
+<!doctype html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <style>
+    body { margin: 0; background: #fafafa; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+    .og { width: 1200px; height: 630px; display: flex; align-items: center; justify-content: center; padding: 48px; box-sizing: border-box; }
+    .content { display: flex; flex-direction: column; gap: 32px; width: 100%; }
+    .headline { font-size: 36px; font-weight: 700; color: #0f172a; max-width: 900px; line-height: 1.2; }
+    .subhead { font-size: 18px; color: #475569; }
+    #og-svg { width: 100%; height: 380px; }
+  </style>
+</head>
+<body>
+  <div class="og">
+    <div class="content">
+      <div class="headline">Switching cost has two components, not one.</div>
+      <svg id="og-svg" role="img"></svg>
+      <div class="subhead">Product-Customer Coupling — Babel, 2026</div>
+    </div>
+  </div>
+  <script>
+    import { STATES } from '~/scripts/states';
+    import { createMatrix, applyState } from '~/scripts/matrix';
+    const svg = document.getElementById('og-svg') as unknown as SVGSVGElement | null;
+    if (svg) {
+      createMatrix(svg, STATES[3]);
+      applyState(svg, STATES[3], { animate: false });
+    }
+  </script>
+</body>
+</html>
