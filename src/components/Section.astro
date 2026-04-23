@@ -1,0 +1,23 @@
+---
+import { getEntry, render } from 'astro:content';
+import MatrixInline from './MatrixInline.astro';
+
+interface Props {
+  slug: string;
+  index: number;
+}
+const { slug, index } = Astro.props;
+const entry = await getEntry('sections', slug);
+if (!entry) throw new Error(`Missing section: ${slug}`);
+const { Content } = await render(entry);
+---
+<section data-section-index={index} id={`section-${index + 1}`}>
+  <div class="prose">
+    <Content />
+  </div>
+  <MatrixInline stateIndex={index} />
+</section>
+
+<style>
+  .prose { max-width: var(--measure); }
+</style>
