@@ -1,11 +1,12 @@
 import type { MatrixState } from './states';
 
 const NS = 'http://www.w3.org/2000/svg';
-const CELL_W = 72;
+const CELL_W = 130;
 const CELL_H = 44;
 const ROW_LABEL_W = 180;
-const COL_LABEL_H = 48;
+const COL_LABEL_H = 72;
 const PAD = 16;
+const META_LABEL_Y = PAD + 14;
 
 export interface RenderOptions {
   animate?: boolean;
@@ -23,15 +24,7 @@ function ensureGroup(svg: SVGSVGElement, attr: string): SVGGElement {
 
 export function createMatrix(svg: SVGSVGElement, initial: MatrixState): void {
   svg.setAttribute('role', 'img');
-  svg.setAttribute('aria-labelledby', 'matrix-title');
-
-  let title = svg.querySelector<SVGTitleElement>('title');
-  if (!title) {
-    title = document.createElementNS(NS, 'title');
-    title.setAttribute('id', 'matrix-title');
-    svg.appendChild(title);
-  }
-  title.textContent = 'Coverage matrix';
+  svg.setAttribute('aria-label', 'Coverage matrix');
 
   ensureGroup(svg, 'data-rows');
   ensureGroup(svg, 'data-cols');
@@ -71,6 +64,31 @@ export function applyState(svg: SVGSVGElement, state: MatrixState, opts: RenderO
   });
 
   colsG.replaceChildren();
+
+  const disturbMeta = document.createElementNS(NS, 'text');
+  disturbMeta.setAttribute('data-axis-meta', 'rows');
+  disturbMeta.setAttribute('x', String(PAD + ROW_LABEL_W - 8));
+  disturbMeta.setAttribute('y', String(META_LABEL_Y));
+  disturbMeta.setAttribute('text-anchor', 'end');
+  disturbMeta.setAttribute('font-size', '10');
+  disturbMeta.setAttribute('font-weight', '600');
+  disturbMeta.setAttribute('letter-spacing', '0.08em');
+  disturbMeta.setAttribute('fill', 'var(--subtle)');
+  disturbMeta.textContent = 'DISTURBANCES ↓';
+  colsG.appendChild(disturbMeta);
+
+  const regulatorMeta = document.createElementNS(NS, 'text');
+  regulatorMeta.setAttribute('data-axis-meta', 'cols');
+  regulatorMeta.setAttribute('x', String(PAD + ROW_LABEL_W + 8));
+  regulatorMeta.setAttribute('y', String(META_LABEL_Y));
+  regulatorMeta.setAttribute('text-anchor', 'start');
+  regulatorMeta.setAttribute('font-size', '10');
+  regulatorMeta.setAttribute('font-weight', '600');
+  regulatorMeta.setAttribute('letter-spacing', '0.08em');
+  regulatorMeta.setAttribute('fill', 'var(--subtle)');
+  regulatorMeta.textContent = 'REGULATORS →';
+  colsG.appendChild(regulatorMeta);
+
   state.columns.forEach((c, j) => {
     const t = document.createElementNS(NS, 'text');
     t.setAttribute('data-col-label', c.key);
@@ -161,14 +179,4 @@ export function applyState(svg: SVGSVGElement, state: MatrixState, opts: RenderO
     extrasG.appendChild(poly);
   }
 
-  if (state.caption) {
-    const t = document.createElementNS(NS, 'text');
-    t.setAttribute('data-caption', '');
-    t.setAttribute('x', String(PAD + ROW_LABEL_W));
-    t.setAttribute('y', String(h - 4));
-    t.setAttribute('font-size', '11');
-    t.setAttribute('fill', 'var(--mid)');
-    t.textContent = state.caption;
-    extrasG.appendChild(t);
-  }
 }

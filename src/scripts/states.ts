@@ -73,7 +73,7 @@ const s1: MatrixState = {
   rows: baseRows,
   columns: baseColumns,
   cells: emptyGrid(5, 3),
-  caption: '',
+  caption: "A regulator (Ashby's sense, not the FDA's) is whatever keeps the business within bounds — software, workflows, staff, heuristics. The grid runs one illustrative example throughout: enterprise IT moving from on-prem datacentres to AWS, as new disturbances — spiky demand, geo-distribution — outran the incumbent.",
 };
 
 const s2: MatrixState = {
