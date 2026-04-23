@@ -1,9 +1,27 @@
 ---
 import Base from '~/layouts/Base.astro';
+import Section from '~/components/Section.astro';
+import StickyCanvas from '~/components/StickyCanvas.astro';
+
+const sections = [
+  { slug: '01-hero' },
+  { slug: '02-frameworks' },
+  { slug: '03-regulator' },
+  { slug: '04-switching-cost' },
+  { slug: '05-windows' },
+  { slug: '06-convergence' },
+  { slug: '07-cta' },
+];
+
+const title = 'Product-Customer Coupling — Why PMF happens when it happens';
+const description =
+  'Switching cost has two components, not one — and founders consistently under-price the one that actually kills deals. A cybernetic structural account of four mechanisms in PMF.';
 ---
-<Base title="Product-Customer Coupling" description="Why PMF happens when it happens.">
+<Base title={title} description={description}>
   <main class="layout">
-    <div class="col-text"><p>Coming soon.</p></div>
-    <div class="col-canvas"></div>
+    <div class="col-text">
+      {sections.map((s, i) => <Section slug={s.slug} index={i} />)}
+    </div>
+    <StickyCanvas />
   </main>
 </Base>
