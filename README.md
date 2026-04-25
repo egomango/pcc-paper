@@ -25,8 +25,6 @@ pnpm og           # regenerate public/og.png (needs dev server running)
 
 ## Architecture
 
-Conventions live in [`CLAUDE.md`](CLAUDE.md). Quick map:
-
 - `src/config/paper.ts` — single source of truth for title, DOI, SSRN URL, author, license. Read by `Base.astro` (JSON-LD `ScholarlyArticle`) and `index.astro` (footer).
 - `src/scripts/states.ts` — matrix states; drives both desktop (`StickyCanvas`) and mobile (`MatrixInline`).
 - `src/content/*.md` — section copy. Order set in `src/pages/index.astro`.
