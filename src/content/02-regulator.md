@@ -1,12 +1,12 @@
 ---
 order: 3
 title: "The customer is already a regulator"
-words_target: 200
+words_target: 220
 ---
 
 ## The customer is already a regulator
 
-Any customer still in business is already regulating itself. It has things that must stay within bounds — revenue, retention, compliance, uptime, whatever the business counts as survival — and it faces a landscape of disturbances that would knock those things outside bounds if nothing absorbed them. Pipeline variance. Regulatory change. Competitive moves. Technology shifts. The ordinary weather of its market.
+Any customer still in business is already regulating itself. *Regulator* in Ashby's sense — any mechanism that holds essential variables within bounds — not a government authority. The customer has things that must stay within bounds — revenue, retention, compliance, uptime, whatever the business counts as survival — and it faces a landscape of disturbances that would knock those things outside bounds if nothing absorbed them. Pipeline variance. Regulatory change. Competitive moves. Technology shifts. The ordinary weather of its market.
 
 Against that landscape, the customer runs an incumbent regulator: the working combination of software, processes, staff roles, heuristics and institutional memory it uses to stay alive. That regulator is imperfect. It's probably strained at the edges. But it exists, it works well enough for the business to still be here, and it has weight.
 

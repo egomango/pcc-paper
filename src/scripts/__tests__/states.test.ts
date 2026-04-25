@@ -28,17 +28,24 @@ describe('STATES', () => {
     expect(reg.cells[4][rc].value).toBe('empty');
   });
 
-  it('switching state has R_c dimmed, R_p full on all 5', () => {
+  it('switching state shows mid-transition: R_c dimmed, R_p ramping at partial', () => {
     const sw = STATES[2];
     const rc = sw.columns.findIndex((c) => c.key === 'R_c');
     const rp = sw.columns.findIndex((c) => c.key === 'R_p');
     expect(sw.cells[0][rc].dimmed).toBe(true);
-    for (let i = 0; i < 5; i++) expect(sw.cells[i][rp].value).toBe('full');
+    expect(sw.cells[1][rc].dimmed).toBe(true);
+    expect(sw.cells[2][rc].dimmed).toBe(true);
+    expect(sw.cells[0][rp].value).toBe('partial');
+    expect(sw.cells[1][rp].value).toBe('partial');
+    expect(sw.cells[2][rp].value).toBe('partial');
   });
 
-  it('windows state has >5 rows — D-shift extends disturbance landscape', () => {
+  it('windows state keeps the partition fixed and marks D-shift via dShiftAt', () => {
     const win = STATES[3];
-    expect(win.rows.length).toBeGreaterThan(5);
+    expect(win.rows.length).toBe(5);
+    expect(win.dShiftAt).toBeDefined();
+    expect(win.dShiftAt).toBeGreaterThan(0);
+    expect(win.dShiftAt).toBeLessThan(5);
   });
 
   it('convergence state has a trajectory through R_p cells', () => {

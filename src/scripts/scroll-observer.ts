@@ -12,19 +12,64 @@ export function pickSectionIndex(entries: IntersectionObserverEntry[]): number |
   return bestIndex;
 }
 
+export interface SectionRect {
+  index: number;
+  top: number;
+}
+
+export function pickActiveByTriggerLine(
+  rects: SectionRect[],
+  triggerY: number
+): number | null {
+  let active: number | null = null;
+  let bestTop = -Infinity;
+  for (const r of rects) {
+    if (r.top <= triggerY && r.top > bestTop) {
+      bestTop = r.top;
+      active = r.index;
+    }
+  }
+  if (active !== null) return active;
+  let earliest: number | null = null;
+  let earliestTop = Infinity;
+  for (const r of rects) {
+    if (r.top < earliestTop) {
+      earliestTop = r.top;
+      earliest = r.index;
+    }
+  }
+  return earliest;
+}
+
+const TRIGGER_RATIO = 0.3;
+
 export function observeSections(onChange: (index: number) => void): IntersectionObserver {
   let currentIndex = -1;
-  const io = new IntersectionObserver(
-    (entries) => {
-      const next = pickSectionIndex(entries);
-      if (next !== null && next !== currentIndex) {
-        currentIndex = next;
-        onChange(next);
-      }
-    },
-    { threshold: [0, 0.25, 0.5, 0.75, 1], rootMargin: '-20% 0px -20% 0px' }
+  const sections = Array.from(
+    document.querySelectorAll<HTMLElement>('[data-section-index]')
   );
 
-  document.querySelectorAll<HTMLElement>('[data-section-index]').forEach((el) => io.observe(el));
+  const evaluate = (): void => {
+    const triggerY = window.innerHeight * TRIGGER_RATIO;
+    const rects: SectionRect[] = sections.map((el) => ({
+      index: Number(el.dataset.sectionIndex),
+      top: el.getBoundingClientRect().top,
+    }));
+    const next = pickActiveByTriggerLine(rects, triggerY);
+    if (next !== null && next !== currentIndex) {
+      currentIndex = next;
+      onChange(next);
+    }
+  };
+
+  const io = new IntersectionObserver(() => evaluate(), {
+    threshold: [0, 0.01, 0.1, 0.25, 0.5, 0.75, 1],
+  });
+  sections.forEach((el) => io.observe(el));
+
+  window.addEventListener('scroll', evaluate, { passive: true });
+  window.addEventListener('resize', evaluate);
+  evaluate();
+
   return io;
 }

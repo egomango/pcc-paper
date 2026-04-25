@@ -1,7 +1,7 @@
 ---
 order: 4
 title: "Switching cost = destruction + exposure"
-words_target: 290
+words_target: 320
 ---
 
 ## Switching cost = destruction + exposure
@@ -18,6 +18,8 @@ switching cost  =  destruction cost  +  exposure cost
 
 **Exposure cost** is the harm incurred while essential variables sit transiently unregulated during the transition — old tools half gone, your product not fully ramped. It scales with the stakes of what's exposed and how long the window stays open.
 
-Founders consistently price destruction — feature parity, data migration, integration work. They consistently under-price exposure. Enterprise pilots rarely die on feature gaps. They die when exposure compounds past customer tolerance before the product ramps. The paper's phrase for this failure mode is *death by pilot*: the venture runs out of cash while the customer is still deciding.
+The two costs run on different clocks. The customer's essential variables are buffered: cash reserves, redundancy, institutional routines absorb disturbances before they reach the viability boundary. The vendor's are not — churn hits cash immediately, runway has no buffer. The customer can defer the decision; the vendor cannot. Pilots extend on the customer's clock, runway depletes on the vendor's, and the venture often runs out of cash while the customer is still deciding. The paper's name for this failure mode is *death by pilot* — not death by rejection. The pilot is the form failure takes when exposure outlasts runway.
 
-The formal apparatus — the variety argument, the transition-window accounting, the stakes-per-unit-time structure — is in §II.4 of the paper.
+Founders consistently price destruction — feature parity, data migration, integration work. They consistently under-price exposure. Enterprise pilots rarely die on feature gaps; they die when exposure compounds past customer tolerance before the product ramps.
+
+The falsifier is sharp: holding destruction cost constant, higher-stakes essential variables should produce stronger switching resistance. If they don't — or correspond to less — the decomposition fails.

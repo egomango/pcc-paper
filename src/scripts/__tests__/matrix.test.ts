@@ -29,22 +29,19 @@ describe('matrix renderer', () => {
     expect(rcCell?.getAttribute('data-value')).toBe('full');
   });
 
-  it('applyState extends rows for windows state', () => {
+  it('applyState marks a D-shift row divider in windows state', () => {
     applyState(container, STATES[3], { animate: false });
     const rowLabels = container.querySelectorAll('[data-row-label]');
-    expect(rowLabels.length).toBe(7);
+    expect(rowLabels.length).toBe(5);
+    expect(STATES[3].dShiftAt).toBeDefined();
+    const divider = container.querySelector('[data-d-shift-divider]');
+    expect(divider).not.toBeNull();
   });
 
   it('dimmed cells get dimmed class', () => {
     applyState(container, STATES[2], { animate: false });
     const rc0 = container.querySelector('[data-cell="0-0"]');
     expect(rc0?.classList.contains('dimmed')).toBe(true);
-  });
-
-  it('wavering cells get wavering class', () => {
-    applyState(container, STATES[2], { animate: false });
-    const trans0 = container.querySelector('[data-cell="0-1"]');
-    expect(trans0?.classList.contains('wavering')).toBe(true);
   });
 
   it('trajectory rendered in convergence state', () => {
