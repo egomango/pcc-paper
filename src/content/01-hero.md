@@ -4,6 +4,8 @@ title: "Hero"
 words_target: 80
 ---
 
+<p class="eyebrow">Companion to the paper · SSRN, 2026</p>
+
 # Product-Customer Coupling
 
 Why product-market fit happens when it happens. The structural layer beneath the four established frameworks — JTBD, Lean Startup, the resource-based view, disruption.
