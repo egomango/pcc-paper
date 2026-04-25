@@ -2,6 +2,7 @@
 ---
 <div class="col-canvas">
   <div id="canvas-inner" class="canvas-inner">
+    <div id="matrix-title" class="matrix-title"></div>
     <svg id="matrix-svg" class="matrix" aria-hidden="true"></svg>
     <div id="matrix-caption" class="matrix-caption"></div>
     <div id="matrix-annotation" class="matrix-annotation"></div>
@@ -20,6 +21,16 @@
     transition: background 300ms ease, padding 300ms ease;
   }
   .matrix { width: 100%; height: auto; max-height: 70vh; }
+  .matrix-title {
+    font-size: 0.6875rem;
+    line-height: 1.4;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+  .matrix-title:empty { display: none; }
+  .canvas-inner[data-mode="slide"] .matrix-title { display: none; }
   .canvas-inner[data-mode="slide"] .matrix,
   .canvas-inner[data-mode="slide"] #matrix-table { display: none; }
   .canvas-inner[data-mode="slide"] {
@@ -73,6 +84,7 @@
   const a11y = document.getElementById('matrix-a11y');
   const caption = document.getElementById('matrix-caption');
   const annotation = document.getElementById('matrix-annotation');
+  const titleEl = document.getElementById('matrix-title');
 
   function renderParagraphs(el: HTMLElement, text: string | undefined): void {
     el.replaceChildren();
@@ -103,6 +115,7 @@
     if (table) renderA11yTable(table, STATES[0]);
     if (caption) renderParagraphs(caption, STATES[0].caption);
     if (annotation) renderParagraphs(annotation, STATES[0].annotation);
+    if (titleEl) titleEl.textContent = STATES[0].title ?? '';
     applyMode(STATES[0]);
     observeSections((index) => {
       const state = STATES[index] ?? STATES[0];
@@ -110,6 +123,7 @@
       if (table) renderA11yTable(table, state);
       if (caption) renderParagraphs(caption, state.caption);
       if (annotation) renderParagraphs(annotation, state.annotation);
+      if (titleEl) titleEl.textContent = state.title ?? '';
       applyMode(state);
       if (a11y) a11y.textContent = state.caption || state.sectionKey;
     });

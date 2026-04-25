@@ -21,11 +21,14 @@ export interface MatrixState {
   columns: ColumnDef[];
   cells: CellState[][];
   trajectory?: Array<{ row: number; col: number }>;
+  title?: string;
   caption?: string;
   annotation?: string;
   dShiftAt?: number;
   hideMatrix?: boolean;
 }
+
+const RUNNING_EXAMPLE = 'Running example · Enterprise IT through the cloud transition';
 
 const baseRows: RowDef[] = [
   { key: 'stable', label: 'Stable internal workloads' },
@@ -76,6 +79,7 @@ const s2: MatrixState = {
   rows: baseRows,
   columns: baseColumns,
   cells: s2Cells,
+  title: RUNNING_EXAMPLE,
   caption:
     "Coverage matrix. Rows are disturbances the customer faces. Columns are regulators absorbing them — software, workflows, staff, heuristics.\n\nSolid cell = covered. Half cell = strained. Empty cell = an opening.\n\nIncumbent regulator: 2 rows covered, 1 strained, 2 latent. The system works for what it was built for.",
   annotation:
@@ -96,6 +100,7 @@ const s3: MatrixState = {
   rows: baseRows,
   columns: baseColumns,
   cells: s3Cells,
+  title: RUNNING_EXAMPLE,
   caption:
     "Mid-transition snapshot. Incumbent dimmed: dismantling in progress — destruction cost. New regulator at partial: not yet at full ramp. The exposure window is the *time* during which essential variables sit outside tolerance, not a third regulator.",
   annotation:
@@ -112,6 +117,7 @@ const s4: MatrixState = {
   columns: baseColumns,
   cells: s4Cells,
   dShiftAt: 3,
+  title: RUNNING_EXAMPLE,
   caption:
     "Landscape drift activates the bottom rows: spiky/geo/elastic become load-bearing. The partition is the same; the weight on it shifted. The window opens where the incumbent's coverage runs out.",
   annotation:
@@ -134,6 +140,7 @@ const s5: MatrixState = {
     { row: 1, col: 1 },
     { row: 0, col: 1 },
   ],
+  title: 'Matrix: cloud transition · Annotation: Slack pivot',
   caption:
     "Numbered probes show migration order: low-stakes, low-destruction rows first; the incumbent's stronghold last. Each probe tested a hypothesis; the map updated; the next tightened. Convergent teams iterate this way.",
   annotation:

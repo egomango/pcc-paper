@@ -5,44 +5,68 @@ interface Props {
 const { stateIndex } = Astro.props;
 ---
 <div class="inline-canvas" data-state-index={stateIndex}>
-  <svg class="matrix-inline" role="img"></svg>
-  <div class="slide-card" hidden>
-    <div class="slide-caption"></div>
-    <div class="slide-annotation"></div>
-  </div>
+  <div class="ic-title"></div>
+  <svg class="ic-matrix" role="img"></svg>
+  <div class="ic-caption"></div>
+  <div class="ic-annotation"></div>
 </div>
 
 <style>
-  .inline-canvas { display: none; margin: 1.5rem 0 0; }
-  @media (max-width: 1023px) { .inline-canvas { display: block; } }
+  .inline-canvas { display: none; margin: 1.5rem 0 0; flex-direction: column; gap: 1rem; }
+  @media (max-width: 1023px) { .inline-canvas { display: flex; } }
 
-  .matrix-inline { width: 100%; max-width: 560px; height: auto; display: none; }
-  .inline-canvas[data-mode="matrix"] .matrix-inline { display: block; }
+  .ic-matrix { width: 100%; max-width: 560px; height: auto; display: none; }
+  .inline-canvas[data-mode="matrix"] .ic-matrix { display: block; }
 
-  .slide-card { display: none; }
-  .inline-canvas[data-mode="slide"] .slide-card {
-    display: block;
+  .ic-title {
+    font-size: 0.6875rem;
+    line-height: 1.4;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+  .ic-title:empty { display: none; }
+  .inline-canvas[data-mode="slide"] .ic-title { display: none; }
+
+  .ic-caption,
+  .ic-annotation { color: var(--text); }
+  .ic-caption p,
+  .ic-annotation p { margin: 0 0 0.5rem 0; }
+  .ic-caption p:last-child,
+  .ic-annotation p:last-child { margin-bottom: 0; }
+  .ic-annotation strong { font-weight: 600; }
+
+  /* Matrix mode: caption is small grey context, annotation is body text */
+  .inline-canvas[data-mode="matrix"] .ic-caption {
+    font-size: 0.875rem;
+    line-height: 1.5;
+    color: var(--mid);
+  }
+  .inline-canvas[data-mode="matrix"] .ic-annotation {
+    font-size: 0.9375rem;
+    line-height: 1.55;
+  }
+
+  /* Slide mode: tinted card, caption is headline, annotation is bullet-y */
+  .inline-canvas[data-mode="slide"] {
     background: #f5f1ea;
-    padding: 1.5rem 1.5rem;
+    padding: 1.5rem;
     border-radius: 4px;
   }
-  .slide-caption {
+  .inline-canvas[data-mode="slide"] .ic-caption {
     font-size: 1.125rem;
     line-height: 1.3;
     font-weight: 600;
-    color: var(--text);
-    margin-bottom: 0.75rem;
   }
-  .slide-caption p { margin: 0 0 0.25rem 0; }
-  .slide-caption p:last-child { margin-bottom: 0; }
-  .slide-annotation {
+  .inline-canvas[data-mode="slide"] .ic-caption p { margin-bottom: 0.25rem; }
+  .inline-canvas[data-mode="slide"] .ic-caption p:last-child { margin-bottom: 0.5rem; }
+  .inline-canvas[data-mode="slide"] .ic-annotation {
     font-size: 0.9375rem;
     line-height: 1.55;
-    color: var(--text);
   }
-  .slide-annotation p { margin: 0 0 0.75rem 0; }
-  .slide-annotation p:last-child { margin-bottom: 0; }
-  .slide-annotation strong { font-weight: 600; }
+  .inline-canvas[data-mode="slide"] .ic-annotation p { margin-bottom: 0.75rem; }
+  .inline-canvas[data-mode="slide"] .ic-annotation p:last-child { margin-bottom: 0; }
 </style>
 
 <script>
@@ -70,19 +94,20 @@ const { stateIndex } = Astro.props;
   document.querySelectorAll<HTMLElement>('.inline-canvas').forEach((wrap) => {
     const i = Number(wrap.getAttribute('data-state-index') ?? '0');
     const state = STATES[i] ?? STATES[0];
-    if (state.hideMatrix) {
-      wrap.setAttribute('data-mode', 'slide');
-      const cap = wrap.querySelector<HTMLElement>('.slide-caption');
-      const ann = wrap.querySelector<HTMLElement>('.slide-annotation');
-      if (cap) renderParagraphs(cap, state.caption);
-      if (ann) renderParagraphs(ann, state.annotation);
-    } else {
-      wrap.setAttribute('data-mode', 'matrix');
-      const svg = wrap.querySelector<SVGSVGElement>('.matrix-inline');
+    wrap.setAttribute('data-mode', state.hideMatrix ? 'slide' : 'matrix');
+
+    if (!state.hideMatrix) {
+      const svg = wrap.querySelector<SVGSVGElement>('.ic-matrix');
       if (svg) {
         createMatrix(svg, state);
         applyState(svg, state, { animate: false });
       }
     }
+    const cap = wrap.querySelector<HTMLElement>('.ic-caption');
+    const ann = wrap.querySelector<HTMLElement>('.ic-annotation');
+    const title = wrap.querySelector<HTMLElement>('.ic-title');
+    if (cap) renderParagraphs(cap, state.caption);
+    if (ann) renderParagraphs(ann, state.annotation);
+    if (title) title.textContent = state.title ?? '';
   });
 </script>

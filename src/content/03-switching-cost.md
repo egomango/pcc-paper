@@ -1,10 +1,10 @@
 ---
 order: 4
-title: "Switching cost = destruction + exposure"
+title: "Switching cost isn't one thing"
 words_target: 230
 ---
 
-## Switching cost = destruction + exposure
+## Switching cost isn't one thing
 
 Adoption literature treats switching cost as a single number — "lock-in," "risk aversion," "inertia." The conflation makes resistance look arbitrary: two similar customers display very different resistance and nobody can say why.
 
