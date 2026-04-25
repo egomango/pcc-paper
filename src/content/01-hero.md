@@ -1,15 +1,16 @@
 ---
 order: 1
 title: "Hero"
-words_target: 40
+words_target: 80
 ---
 
 # Product-Customer Coupling
 
-**Switching cost has two components, not one — and founders consistently under-price the one that actually kills deals.**
+Why product-market fit happens when it happens. A structural account, not a list of patterns.
 
-*A cybernetic structural account of four mechanisms in product-market fit.*
+The customer is already running a regulator that keeps the business alive. Your product proposes to alter it. PMF selects on whether the alteration is worth its cost — and four mechanisms fall out of that frame: **switching cost, timing, iteration convergence, pivot survival**.
 
-Tamas Babel · InnoLab, BME
+**Tamas Babel** · BME InnoLab
+Ex-BCG. Cofounder of two deep-tech ventures. PhD, MBA.
 
-[Read the paper on SSRN](https://ssrn.com/abstract=6618399)
+[Read on SSRN](https://ssrn.com/abstract=6618399) · [DOI](https://doi.org/10.2139/ssrn.6618399)

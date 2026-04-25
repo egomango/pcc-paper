@@ -1,9 +1,10 @@
 ---
 ---
 <div class="col-canvas">
-  <div class="canvas-inner">
+  <div id="canvas-inner" class="canvas-inner">
     <svg id="matrix-svg" class="matrix" aria-hidden="true"></svg>
-    <p id="matrix-caption" class="matrix-caption"></p>
+    <div id="matrix-caption" class="matrix-caption"></div>
+    <div id="matrix-annotation" class="matrix-annotation"></div>
   </div>
   <table id="matrix-table" class="sr-only"></table>
   <div id="matrix-a11y" class="sr-only" aria-live="polite"></div>
@@ -18,15 +19,40 @@
     gap: 1rem;
   }
   .matrix { width: 100%; height: auto; max-height: 70vh; }
+  .canvas-inner[data-mode="slide"] .matrix,
+  .canvas-inner[data-mode="slide"] #matrix-table { display: none; }
   .matrix-caption {
     font-size: 0.875rem;
     line-height: 1.5;
     color: var(--mid);
-    margin: 0;
     max-width: 100%;
     min-height: 2.6em;
     transition: opacity 300ms ease;
   }
+  .matrix-caption p { margin: 0 0 0.5rem 0; }
+  .matrix-caption p:last-child { margin-bottom: 0; }
+  .canvas-inner[data-mode="slide"] .matrix-caption {
+    font-size: 1.5rem;
+    line-height: 1.25;
+    color: var(--text);
+    font-weight: 600;
+    min-height: 0;
+    margin-bottom: 0.5rem;
+  }
+  .canvas-inner[data-mode="slide"] .matrix-caption p { margin: 0 0 0.25rem 0; }
+  .matrix-annotation {
+    font-size: 0.9375rem;
+    line-height: 1.55;
+    color: var(--text);
+    max-width: 100%;
+    transition: opacity 300ms ease;
+  }
+  .matrix-annotation:empty { display: none; }
+  .matrix-annotation p { margin: 0 0 0.75rem 0; }
+  .matrix-annotation p:last-child { margin-bottom: 0; }
+  .canvas-inner[data-mode="slide"] .matrix-annotation { font-size: 1rem; line-height: 1.6; }
+  .canvas-inner[data-mode="slide"] .matrix-annotation p { margin: 0 0 1rem 0; }
+  .canvas-inner[data-mode="slide"] .matrix-annotation strong { font-weight: 600; }
 </style>
 
 <script>
@@ -35,20 +61,54 @@
   import { renderA11yTable } from '~/scripts/a11y-table';
   import { observeSections } from '~/scripts/scroll-observer';
 
+  const inner = document.getElementById('canvas-inner');
   const svg = document.getElementById('matrix-svg') as unknown as SVGSVGElement | null;
   const table = document.getElementById('matrix-table') as HTMLTableElement | null;
   const a11y = document.getElementById('matrix-a11y');
   const caption = document.getElementById('matrix-caption');
+  const annotation = document.getElementById('matrix-annotation');
+
+  function renderParagraphs(
+    el: HTMLElement,
+    text: string | undefined,
+    boldLead = false
+  ): void {
+    el.replaceChildren();
+    if (!text) return;
+    for (const para of text.split(/\n{2,}/)) {
+      const p = document.createElement('p');
+      const m = boldLead ? para.match(/^([^.]+\.)\s*(.*)$/s) : null;
+      if (m) {
+        const strong = document.createElement('strong');
+        strong.textContent = m[1];
+        p.appendChild(strong);
+        if (m[2]) p.appendChild(document.createTextNode(' ' + m[2]));
+      } else {
+        p.textContent = para;
+      }
+      el.appendChild(p);
+    }
+  }
+
+  function applyMode(state: { hideMatrix?: boolean }): void {
+    if (!inner) return;
+    if (state.hideMatrix) inner.setAttribute('data-mode', 'slide');
+    else inner.removeAttribute('data-mode');
+  }
 
   if (svg) {
     createMatrix(svg, STATES[0]);
     if (table) renderA11yTable(table, STATES[0]);
-    if (caption) caption.textContent = STATES[0].caption ?? '';
+    if (caption) renderParagraphs(caption, STATES[0].caption);
+    if (annotation) renderParagraphs(annotation, STATES[0].annotation, !!STATES[0].hideMatrix);
+    applyMode(STATES[0]);
     observeSections((index) => {
       const state = STATES[index] ?? STATES[0];
       applyState(svg, state);
       if (table) renderA11yTable(table, state);
-      if (caption) caption.textContent = state.caption ?? '';
+      if (caption) renderParagraphs(caption, state.caption);
+      if (annotation) renderParagraphs(annotation, state.annotation, !!state.hideMatrix);
+      applyMode(state);
       if (a11y) a11y.textContent = state.caption || state.sectionKey;
     });
   }

@@ -23,6 +23,9 @@ export interface MatrixState {
   frameworkLabels?: string[];
   trajectory?: Array<{ row: number; col: number }>;
   caption?: string;
+  annotation?: string;
+  dShiftAt?: number;
+  hideMatrix?: boolean;
 }
 
 const baseRows: RowDef[] = [
@@ -35,12 +38,11 @@ const baseRows: RowDef[] = [
 
 const extendedRows: RowDef[] = [
   ...baseRows,
-  { key: 'realtime_ml', label: 'Real-time ML inference (D-shift)' },
-  { key: 'edge_stream', label: 'Edge data streams (D-shift)' },
+  { key: 'realtime_ml', label: 'Real-time ML inference' },
+  { key: 'edge_stream', label: 'Edge data streams' },
 ];
 
 const baseColumns: ColumnDef[] = [
-  { key: 'R_c_single', label: 'Single-site on-prem' },
   { key: 'R_c', label: 'Distributed on-prem' },
   { key: 'R_p', label: 'Public cloud' },
 ];
@@ -72,8 +74,9 @@ const s1: MatrixState = {
   sectionKey: 'hero',
   rows: baseRows,
   columns: baseColumns,
-  cells: emptyGrid(5, 3),
-  caption: "A regulator (Ashby's sense, not the FDA's) is whatever keeps the business within bounds — software, workflows, staff, heuristics. The grid runs one illustrative example throughout: enterprise IT moving from on-prem datacentres to AWS, as new disturbances — spiky demand, geo-distribution — outran the incumbent.",
+  cells: emptyGrid(5, 2),
+  caption:
+    "Coverage matrix. Rows are disturbances the customer faces. Columns are regulators absorbing them — software, workflows, staff, heuristics, in Ashby's sense, not the FDA's.\n\nSolid cell = covered. Half cell = strained. Empty cell = an opening.\n\nThe grid runs one example throughout: enterprise IT through the cloud transition. As spiky demand and geo-distribution joined the disturbance landscape, on-prem couldn't cover the new rows at viable cost. AWS won by closing them.",
 };
 
 const s2: MatrixState = {
@@ -81,20 +84,22 @@ const s2: MatrixState = {
   sectionKey: 'frameworks',
   rows: baseRows,
   columns: baseColumns,
-  cells: emptyGrid(5, 3),
+  cells: emptyGrid(5, 2),
   frameworkLabels: ['JTBD', 'Lean', 'RBV', 'Disruption'],
-  caption: 'Four frameworks, none filling cells.',
+  caption:
+    'Each framework names a real piece. None operates at the cell level — disturbance × regulator — where coupling actually happens.',
 };
 
-const s3Cells = emptyGrid(5, 3);
-fillRc(s3Cells, 1);
+const s3Cells = emptyGrid(5, 2);
+fillRc(s3Cells, 0);
 const s3: MatrixState = {
   id: 3,
   sectionKey: 'regulator',
   rows: baseRows,
   columns: baseColumns,
   cells: s3Cells,
-  caption: 'V(R_c) = 2',
+  caption:
+    'Incumbent regulator: 2 rows covered, 1 strained, 2 uncovered. The system works for what it was built for.',
 };
 
 const s4Cells = emptyGrid(5, 3);
@@ -110,26 +115,31 @@ const s4: MatrixState = {
   rows: baseRows,
   columns: columnsWithCorridor,
   cells: s4Cells,
-  caption: 'destruction  ←  exposure  →  V(R_p) = 5',
+  caption:
+    'Distributed on-prem (incumbent): being dismantled — destruction in progress. Transition column: exposure window — old tools half gone, new ones not yet ramped. Public cloud (new regulator): five rows covered.',
+  annotation:
+    "AWS is the cleanest worked example. Through the 1990s and early 2000s, enterprise IT's incumbent was the on-premises datacentre — covering stable internal workloads and scheduled batch. Then the landscape drifted: spiky event-driven demand, geo-distributed access, and elastic analytical workloads became load-bearing. The incumbent couldn't cover the new rows at viable cost.\n\nAWS didn't win by beating on-prem at what on-prem already did well. It won by closing the new rows. Destruction was gradual — deferred to hardware refresh cycles. Exposure was concentrated per workload, hedged by migration order: dev/test first, then customer-facing web tiers, then data and analytics, systems of record often last. “Cloud-first, not cloud-only” was parallel-run by architecture. “Lift-and-shift” migrations that moved stable workloads into the cloud without capturing the elastic cells paid destruction cost and got nothing in return.",
 };
 
-const s5Cells = emptyGrid(7, 3);
+const s5Cells = emptyGrid(7, 2);
 fillRc(s5Cells, 0);
-fillRp(s5Cells, 2, 5);
-s5Cells[5][2] = { value: 'full' };
-s5Cells[6][2] = { value: 'full' };
+fillRp(s5Cells, 1, 5);
+s5Cells[5][1] = { value: 'full' };
+s5Cells[6][1] = { value: 'full' };
 const s5: MatrixState = {
   id: 5,
   sectionKey: 'windows',
   rows: extendedRows,
   columns: baseColumns,
   cells: s5Cells,
-  caption: 'D-shift: two new rows; window = overlap',
+  dShiftAt: 5,
+  caption:
+    "Landscape drift: real-time ML inference and edge data streams entered as load-bearing rows. The incumbent doesn't cover them. The window opens in that gap.",
 };
 
-const s6Cells = emptyGrid(7, 3);
+const s6Cells = emptyGrid(7, 2);
 fillRc(s6Cells, 0);
-fillRp(s6Cells, 2, 7);
+fillRp(s6Cells, 1, 7);
 const s6: MatrixState = {
   id: 6,
   sectionKey: 'convergence',
@@ -137,15 +147,16 @@ const s6: MatrixState = {
   columns: baseColumns,
   cells: s6Cells,
   trajectory: [
-    { row: 0, col: 2 },
-    { row: 1, col: 2 },
-    { row: 4, col: 2 },
-    { row: 2, col: 2 },
-    { row: 3, col: 2 },
-    { row: 5, col: 2 },
-    { row: 6, col: 2 },
+    { row: 1, col: 1 },
+    { row: 2, col: 1 },
+    { row: 3, col: 1 },
+    { row: 4, col: 1 },
+    { row: 0, col: 1 },
+    { row: 5, col: 1 },
+    { row: 6, col: 1 },
   ],
-  caption: 'Model-based search: ordered trajectory.',
+  caption:
+    "Numbered probes show the AWS migration order: low-stakes workloads first, the incumbent's stronghold (stable internal workloads) last. Each probe tested a hypothesis; the map updated; the next tightened. Convergent teams iterate this way; map-less teams random-walk.",
 };
 
 const s7: MatrixState = {
@@ -154,7 +165,10 @@ const s7: MatrixState = {
   rows: extendedRows,
   columns: baseColumns,
   cells: s6Cells,
-  caption: "Coupled regulation under D'.",
+  hideMatrix: true,
+  caption: 'Designing with PCC. Three places where the framework changes practice.',
+  annotation:
+    "Product is composite. The customer couples with the artifact plus the vendor apparatus around it — sales, onboarding, SLA, parallel-run infrastructure. Where exposure dominates, the apparatus is the product, not overhead.\n\nPricing absorbs switching cost. Destruction and exposure scale on different things and want different contractual responses — free trials, parallel-run contracts, “pay on cutover,” success fees. Pricing is structural, not commercial intuition.\n\nOrganisation mirrors the coupling. The team is itself a regulator. Hiring sales before customer success when exposure dominates ships windows nobody's responsible for closing. Map-maintenance, pilot ownership, and exposure budgeting belong on the org chart from day one.",
 };
 
 export const STATES: MatrixState[] = [s1, s2, s3, s4, s5, s6, s7];

@@ -14,7 +14,7 @@ describe('STATES', () => {
   it('hero state has empty cells and labelled axes', () => {
     const hero = STATES[0];
     expect(hero.rows).toHaveLength(5);
-    expect(hero.columns).toHaveLength(3);
+    expect(hero.columns).toHaveLength(2);
     expect(hero.cells.every((row) => row.every((c: CellState) => c.value === 'empty'))).toBe(true);
   });
 

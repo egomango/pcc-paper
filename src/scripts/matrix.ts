@@ -58,7 +58,9 @@ export function applyState(svg: SVGSVGElement, state: MatrixState, opts: RenderO
     t.setAttribute('y', String(PAD + COL_LABEL_H + i * CELL_H + CELL_H / 2 + 4));
     t.setAttribute('text-anchor', 'end');
     t.setAttribute('font-size', '12');
-    t.setAttribute('fill', 'var(--mid)');
+    const isDShiftRow = state.dShiftAt !== undefined && i >= state.dShiftAt;
+    t.setAttribute('fill', isDShiftRow ? 'var(--accent)' : 'var(--mid)');
+    if (isDShiftRow) t.setAttribute('font-style', 'italic');
     t.textContent = r.label;
     rowsG.appendChild(t);
   });
@@ -160,23 +162,73 @@ export function applyState(svg: SVGSVGElement, state: MatrixState, opts: RenderO
     });
   }
 
+  if (state.dShiftAt !== undefined) {
+    const y = PAD + COL_LABEL_H + state.dShiftAt * CELL_H;
+    const x1 = PAD + 8;
+    const x2 = PAD + ROW_LABEL_W + nCols * CELL_W;
+    const line = document.createElementNS(NS, 'line');
+    line.setAttribute('data-d-shift-divider', '');
+    line.setAttribute('x1', String(x1));
+    line.setAttribute('y1', String(y));
+    line.setAttribute('x2', String(x2));
+    line.setAttribute('y2', String(y));
+    line.setAttribute('stroke', 'var(--accent)');
+    line.setAttribute('stroke-width', '1');
+    line.setAttribute('stroke-dasharray', '3 5');
+    line.setAttribute('opacity', '0.4');
+    extrasG.appendChild(line);
+  }
+
   if (state.trajectory) {
-    const poly = document.createElementNS(NS, 'polyline');
-    poly.setAttribute('data-trajectory', '');
-    const points = state.trajectory
-      .map(({ row, col }) => {
-        const cx = PAD + ROW_LABEL_W + col * CELL_W + CELL_W / 2;
-        const cy = PAD + COL_LABEL_H + row * CELL_H + CELL_H / 2;
-        return `${cx},${cy}`;
-      })
-      .join(' ');
-    poly.setAttribute('points', points);
-    poly.setAttribute('fill', 'none');
-    poly.setAttribute('stroke', 'var(--accent)');
-    poly.setAttribute('stroke-width', '2');
-    poly.setAttribute('stroke-dasharray', '4 4');
-    poly.setAttribute('opacity', '0.7');
-    extrasG.appendChild(poly);
+    const points = state.trajectory.map(({ row, col }) => ({
+      cx: PAD + ROW_LABEL_W + col * CELL_W + CELL_W / 2,
+      cy: PAD + COL_LABEL_H + row * CELL_H + CELL_H / 2,
+    }));
+
+    const path = document.createElementNS(NS, 'path');
+    path.setAttribute('data-trajectory', '');
+    const cmds: string[] = [];
+    points.forEach((p, i) => {
+      if (i === 0) {
+        cmds.push(`M ${p.cx} ${p.cy}`);
+      } else {
+        const prev = points[i - 1];
+        const dy = Math.abs(p.cy - prev.cy);
+        const bow = Math.min(dy * 0.7, CELL_W * 1.6);
+        const ctrlX = prev.cx - bow;
+        const ctrlY = (prev.cy + p.cy) / 2;
+        cmds.push(`Q ${ctrlX} ${ctrlY} ${p.cx} ${p.cy}`);
+      }
+    });
+    path.setAttribute('d', cmds.join(' '));
+    path.setAttribute('fill', 'none');
+    path.setAttribute('stroke', 'var(--text)');
+    path.setAttribute('stroke-width', '1.5');
+    path.setAttribute('stroke-linecap', 'round');
+    path.setAttribute('opacity', '0.4');
+    extrasG.appendChild(path);
+
+    points.forEach((p, idx) => {
+      const circle = document.createElementNS(NS, 'circle');
+      circle.setAttribute('data-probe', String(idx + 1));
+      circle.setAttribute('cx', String(p.cx));
+      circle.setAttribute('cy', String(p.cy));
+      circle.setAttribute('r', '11');
+      circle.setAttribute('fill', 'var(--surface)');
+      circle.setAttribute('stroke', 'var(--accent)');
+      circle.setAttribute('stroke-width', '2');
+      extrasG.appendChild(circle);
+
+      const num = document.createElementNS(NS, 'text');
+      num.setAttribute('x', String(p.cx));
+      num.setAttribute('y', String(p.cy + 4));
+      num.setAttribute('text-anchor', 'middle');
+      num.setAttribute('font-size', '11');
+      num.setAttribute('font-weight', '700');
+      num.setAttribute('fill', 'var(--accent)');
+      num.textContent = String(idx + 1);
+      extrasG.appendChild(num);
+    });
   }
 
 }

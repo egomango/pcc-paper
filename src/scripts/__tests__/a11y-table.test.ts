@@ -28,7 +28,7 @@ describe('renderA11yTable', () => {
   it('writes cell value text (full / partial / empty)', () => {
     renderA11yTable(table, STATES[2]);
     const firstCellText = table.querySelector('tbody tr td')?.textContent;
-    expect(firstCellText).toContain('empty');
+    expect(firstCellText).toContain('full');
   });
 
   it('appends "(dimmed)" suffix for dimmed cells', () => {

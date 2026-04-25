@@ -13,19 +13,19 @@ describe('matrix renderer', () => {
 
   it('renders a cell for each row×col', () => {
     const cells = container.querySelectorAll('[data-cell]');
-    expect(cells.length).toBe(5 * 3);
+    expect(cells.length).toBe(5 * 2);
   });
 
   it('renders axis labels for rows and columns', () => {
     const rowLabels = container.querySelectorAll('[data-row-label]');
     const colLabels = container.querySelectorAll('[data-col-label]');
     expect(rowLabels.length).toBe(5);
-    expect(colLabels.length).toBe(3);
+    expect(colLabels.length).toBe(2);
   });
 
   it('applyState updates cell visual for full coverage', () => {
     applyState(container, STATES[2], { animate: false });
-    const rcCell = container.querySelector('[data-cell="0-1"]');
+    const rcCell = container.querySelector('[data-cell="0-0"]');
     expect(rcCell?.getAttribute('data-value')).toBe('full');
   });
 
