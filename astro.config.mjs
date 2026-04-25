@@ -19,8 +19,10 @@ function remarkDecomposition() {
 }
 
 export default defineConfig({
-  site: 'https://pcc-paper.prozensky.com',
+  site: 'https://egomango.github.io',
+  base: '/pcc-paper',
   output: 'static',
+  trailingSlash: 'ignore',
   build: { inlineStylesheets: 'auto' },
   devToolbar: { enabled: false },
   markdown: {

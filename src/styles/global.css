@@ -10,8 +10,8 @@
   --cover: #0284c7;
   --link: #0369a1;
 
-  --font-body: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+  --font-body: "IBM Plex Sans Variable", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
 
   --measure: 680px;
   --gap: 1.5rem;
@@ -71,7 +71,7 @@ p { margin: 0 0 1rem 0; max-width: var(--measure); }
 
 .decomposition {
   font-family: var(--font-mono);
-  font-weight: 700;
+  font-weight: 500;
   font-size: 1.125rem;
   padding: 1.25rem 1.5rem;
   margin: 1.5rem 0;
@@ -79,6 +79,9 @@ p { margin: 0 0 1rem 0; max-width: var(--measure); }
   border-left: 3px solid var(--accent);
   max-width: var(--measure);
 }
+
+svg [data-axis-meta] { font-family: var(--font-mono); }
+code, kbd, samp { font-family: var(--font-mono); }
 
 .sr-only {
   position: absolute;
