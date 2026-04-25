@@ -18,21 +18,21 @@ describe('renderA11yTable', () => {
   });
 
   it('renders one row per state row, with row header', () => {
-    renderA11yTable(table, STATES[2]);
+    renderA11yTable(table, STATES[1]);
     const rows = table.querySelectorAll('tbody tr');
-    expect(rows.length).toBe(STATES[2].rows.length);
+    expect(rows.length).toBe(STATES[1].rows.length);
     const firstRowHeader = rows[0].querySelector('th');
     expect(firstRowHeader?.getAttribute('scope')).toBe('row');
   });
 
   it('writes cell value text (full / partial / empty)', () => {
-    renderA11yTable(table, STATES[2]);
+    renderA11yTable(table, STATES[1]);
     const firstCellText = table.querySelector('tbody tr td')?.textContent;
     expect(firstCellText).toContain('full');
   });
 
   it('appends "(dimmed)" suffix for dimmed cells', () => {
-    renderA11yTable(table, STATES[3]);
+    renderA11yTable(table, STATES[2]);
     const rowCells = table.querySelectorAll('tbody tr:first-child td');
     const first = rowCells[0].textContent ?? '';
     expect(first.includes('dimmed')).toBe(true);

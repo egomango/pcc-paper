@@ -149,19 +149,6 @@ export function applyState(svg: SVGSVGElement, state: MatrixState, opts: RenderO
 
   extrasG.replaceChildren();
 
-  if (state.frameworkLabels) {
-    state.frameworkLabels.forEach((label, i) => {
-      const t = document.createElementNS(NS, 'text');
-      t.setAttribute('data-framework-label', label);
-      t.setAttribute('x', String(PAD + ROW_LABEL_W + nCols * CELL_W + 16));
-      t.setAttribute('y', String(PAD + COL_LABEL_H + i * 22 + 14));
-      t.setAttribute('font-size', '12');
-      t.setAttribute('fill', 'var(--subtle)');
-      t.textContent = label;
-      extrasG.appendChild(t);
-    });
-  }
-
   if (state.dShiftAt !== undefined) {
     const y = PAD + COL_LABEL_H + state.dShiftAt * CELL_H;
     const x1 = PAD + 8;

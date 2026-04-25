@@ -68,23 +68,19 @@
   const caption = document.getElementById('matrix-caption');
   const annotation = document.getElementById('matrix-annotation');
 
-  function renderParagraphs(
-    el: HTMLElement,
-    text: string | undefined,
-    boldLead = false
-  ): void {
+  function renderParagraphs(el: HTMLElement, text: string | undefined): void {
     el.replaceChildren();
     if (!text) return;
     for (const para of text.split(/\n{2,}/)) {
       const p = document.createElement('p');
-      const m = boldLead ? para.match(/^([^.]+\.)\s*(.*)$/s) : null;
-      if (m) {
-        const strong = document.createElement('strong');
-        strong.textContent = m[1];
-        p.appendChild(strong);
-        if (m[2]) p.appendChild(document.createTextNode(' ' + m[2]));
-      } else {
-        p.textContent = para;
+      for (const part of para.split(/(\*\*[^*]+\*\*)/)) {
+        if (part.startsWith('**') && part.endsWith('**')) {
+          const strong = document.createElement('strong');
+          strong.textContent = part.slice(2, -2);
+          p.appendChild(strong);
+        } else if (part) {
+          p.appendChild(document.createTextNode(part));
+        }
       }
       el.appendChild(p);
     }
@@ -100,14 +96,14 @@
     createMatrix(svg, STATES[0]);
     if (table) renderA11yTable(table, STATES[0]);
     if (caption) renderParagraphs(caption, STATES[0].caption);
-    if (annotation) renderParagraphs(annotation, STATES[0].annotation, !!STATES[0].hideMatrix);
+    if (annotation) renderParagraphs(annotation, STATES[0].annotation);
     applyMode(STATES[0]);
     observeSections((index) => {
       const state = STATES[index] ?? STATES[0];
       applyState(svg, state);
       if (table) renderA11yTable(table, state);
       if (caption) renderParagraphs(caption, state.caption);
-      if (annotation) renderParagraphs(annotation, state.annotation, !!state.hideMatrix);
+      if (annotation) renderParagraphs(annotation, state.annotation);
       applyMode(state);
       if (a11y) a11y.textContent = state.caption || state.sectionKey;
     });
