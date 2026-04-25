@@ -12,4 +12,4 @@ DOI: [10.2139/ssrn.6618399](https://doi.org/10.2139/ssrn.6618399)
 
 ---
 
-Tamas Babel · BME InnoLab · Licensed CC-BY 4.0.
+Licensed CC-BY 4.0.
