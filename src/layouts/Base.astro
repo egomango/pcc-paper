@@ -3,6 +3,7 @@ import '@fontsource-variable/ibm-plex-sans';
 import '@fontsource/ibm-plex-mono/400.css';
 import '@fontsource/ibm-plex-mono/500.css';
 import '~/styles/global.css';
+import { PAPER } from '~/config/paper';
 
 interface Props {
   title: string;
@@ -15,6 +16,38 @@ const withBase = (path: string) =>
 const { title, description, ogImage = withBase('og.png') } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site).toString();
 const faviconHref = withBase('favicon.svg');
+const ogImageUrl = new URL(ogImage, Astro.site).toString();
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'ScholarlyArticle',
+  headline: PAPER.title,
+  description,
+  author: {
+    '@type': 'Person',
+    name: PAPER.author.name,
+    affiliation: PAPER.author.affiliations.map((name) => ({
+      '@type': 'Organization',
+      name,
+    })),
+    identifier: {
+      '@type': 'PropertyValue',
+      propertyID: 'ORCID',
+      value: PAPER.author.orcid,
+    },
+  },
+  datePublished: PAPER.datePublished,
+  identifier: {
+    '@type': 'PropertyValue',
+    propertyID: 'DOI',
+    value: PAPER.doi,
+  },
+  sameAs: [PAPER.ssrnUrl, PAPER.doiUrl],
+  url: canonical,
+  image: ogImageUrl,
+  keywords: PAPER.keywords.join(', '),
+  license: PAPER.license.url,
+};
 ---
 <!doctype html>
 <html lang="en">
@@ -25,6 +58,7 @@ const faviconHref = withBase('favicon.svg');
     <link rel="canonical" href={canonical} />
     <title>{title}</title>
     <meta name="description" content={description} />
+    <script type="application/ld+json" is:inline set:html={JSON.stringify(jsonLd)} />
 
     <meta property="og:type" content="article" />
     <meta property="og:title" content={title} />

@@ -2,6 +2,7 @@
 import Base from '~/layouts/Base.astro';
 import Section from '~/components/Section.astro';
 import StickyCanvas from '~/components/StickyCanvas.astro';
+import { PAPER } from '~/config/paper';
 
 const sections = [
   { slug: '01-hero' },
@@ -12,9 +13,8 @@ const sections = [
   { slug: '06-cta' },
 ];
 
-const title = 'Product-Customer Coupling — Why PMF happens';
-const description =
-  'Product-Customer Coupling (PCC): a cybernetic account of why product-market fit happens when it happens. Switching cost has two components, not one — and founders consistently under-price the one that actually kills deals.';
+const title = `${PAPER.shortTitle} — Why PMF happens`;
+const description = `${PAPER.shortTitle} (${PAPER.acronym}): a cybernetic account of why product-market fit happens when it happens. Switching cost has two components, not one — and founders consistently under-price the one that actually kills deals.`;
 ---
 <Base title={title} description={description}>
   <main class="layout">
@@ -25,9 +25,9 @@ const description =
   </main>
   <footer class="page-footer">
     <ul class="footer-links">
-      <li><a href="https://ssrn.com/abstract=6618399">Read on SSRN</a></li>
-      <li>DOI: <a href="https://doi.org/10.2139/ssrn.6618399">10.2139/ssrn.6618399</a></li>
-      <li>Licensed <a href="https://creativecommons.org/licenses/by/4.0/" rel="license">CC-BY 4.0</a></li>
+      <li><a href={PAPER.ssrnUrl}>Read on SSRN</a></li>
+      <li>DOI: <a href={PAPER.doiUrl}>{PAPER.doi}</a></li>
+      <li>Licensed <a href={PAPER.license.url} rel="license">{PAPER.license.name}</a></li>
     </ul>
   </footer>
 </Base>
