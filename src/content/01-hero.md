@@ -12,4 +12,4 @@ words_target: 40
 
 Tamas Babel · InnoLab, BME
 
-[Read the paper on SSRN](https://ssrn.com/abstract=PLACEHOLDER)
+[Read the paper on SSRN](https://ssrn.com/abstract=6618399)
