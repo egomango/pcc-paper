@@ -4,11 +4,11 @@ title: "Hero"
 words_target: 80
 ---
 
-<p class="eyebrow">Companion to the paper · SSRN, 2026</p>
+<p class="eyebrow">Companion to the paper</p>
 
-# Product-Customer Coupling
+# Product-Customer Coupling: Why Product-Market Fit Happens When It Happens
 
-Why product-market fit happens when it happens. The structural layer beneath the four established frameworks — JTBD, Lean Startup, the resource-based view, disruption.
+The structural layer beneath the four established frameworks — JTBD, Lean Startup, the resource-based view, disruption.
 
 The customer is already running a regulator that keeps the business alive. Your product proposes to alter it. PMF selects on whether the alteration is worth its cost — and four mechanisms fall out of that frame: **switching cost, timing, iteration convergence, pivot survival**.
 
