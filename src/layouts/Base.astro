@@ -37,12 +37,15 @@ const faviconHref = withBase('favicon.svg');
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={new URL(ogImage, Astro.site).toString()} />
 
-    {import.meta.env.PROD && (
-      <script
-        defer
-        data-domain="egomango.github.io/pcc-paper"
-        src="https://plausible.io/js/script.js"
-      ></script>
+    {import.meta.env.PROD && import.meta.env.PUBLIC_PLAUSIBLE_SRC && (
+      <Fragment>
+        <script async src={import.meta.env.PUBLIC_PLAUSIBLE_SRC}></script>
+        <script is:inline>
+          window.plausible = window.plausible || function() { (plausible.q = plausible.q || []).push(arguments) };
+          plausible.init = plausible.init || function(i) { plausible.o = i || {} };
+          plausible.init();
+        </script>
+      </Fragment>
     )}
   </head>
   <body>
