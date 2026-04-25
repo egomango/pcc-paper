@@ -71,17 +71,20 @@ const s1: MatrixState = {
     "Founders do everything right and still miss. Others do less and land. The folklore answer — right place, right time, read the tea leaves — gestures at the phenomenon without naming the mechanism.\n\n**Jobs-to-Be-Done** names the demand: customers hire products to make progress on jobs they care about. The complement is the customer-side mechanics — what dislodges the incumbent, and at what cost.\n\n**Lean Startup** gives the search method: build, measure, learn — a discipline for iterating when the answer isn't known. The complement is why the loop converges in some cases and not in others, which Claim 4 makes structural.\n\n**The resource-based view** explains durable advantage from the firm's side: which capabilities and assets are hard to imitate. RBV treats the customer as environment; PCC treats it as an agent with its own adaptive logic.\n\n**Christensen's disruption** gives the temporal shape: cheaper, simpler entrants displacing overshooting incumbents. PCC adds the single-customer mechanics — why a price-performance argument that wins on paper often stalls in the room.\n\nPCC sits in the cybernetic-management tradition — Ashby's regulator, Beer's Viable System Model — applied to the inter-party regulatory equilibrium two viable parties have to reach for adoption.",
 };
 
-const s2Cells = emptyGrid(5, 2);
+const incumbentOnlyColumns: ColumnDef[] = [
+  { key: 'R_c', label: 'Distributed on-prem' },
+];
+const s2Cells = emptyGrid(5, 1);
 fillRc(s2Cells, 0);
 const s2: MatrixState = {
   id: 2,
   sectionKey: 'regulator',
   rows: baseRows,
-  columns: baseColumns,
+  columns: incumbentOnlyColumns,
   cells: s2Cells,
   title: RUNNING_EXAMPLE,
   caption:
-    "Coverage matrix. Rows are disturbances the customer faces. Columns are regulators absorbing them — software, workflows, staff, heuristics.\n\nSolid cell = covered. Half cell = strained. Empty cell = an opening.\n\nIncumbent regulator: 2 rows covered, 1 strained, 2 latent. The system works for what it was built for.",
+    "Incumbent regulator only — public cloud hasn't entered the chart yet. Rows = disturbances, columns = regulators. Solid = covered, half = strained, empty = opening. 2 covered, 1 strained, 2 latent.",
   annotation:
     "The grid runs one example throughout: enterprise IT before the cloud transition. The bottom two rows — geo-distributed access, elastic analytics — exist in the partition but aren't yet load-bearing. They become the rows that open the window.",
 };
@@ -140,11 +143,11 @@ const s5: MatrixState = {
     { row: 1, col: 1 },
     { row: 0, col: 1 },
   ],
-  title: 'Matrix: cloud transition · Annotation: Slack pivot',
+  title: RUNNING_EXAMPLE,
   caption:
-    "Numbered probes show migration order: low-stakes, low-destruction rows first; the incumbent's stronghold last. Each probe tested a hypothesis; the map updated; the next tightened. Convergent teams iterate this way.",
+    "Numbered probes show migration order: low-stakes, low-destruction rows first; the incumbent's stronghold last. Each probe tested a hypothesis; the map updated; the next tightened.",
   annotation:
-    "Slack is the model-preservation pivot. Tiny Speck built real-time messaging to coordinate Glitch — a multiplayer game that failed. Artifact and segment both changed at the pivot; what survived was the team's map of one narrow disturbance landscape — the cost of threading shared work through email — which generalised cleanly to engineering teams and then wider knowledge work. The coverage-structure map carries across, not the artifact.",
+    "Successful cloud migrations ran this loop with discipline — each workload chosen for what it would teach, each rollout sized to its exposure budget. Lift-and-shift skipped the loop, moved every workload in inventory order, paid destruction cost, and never reached convergence on the rows the shift had actually opened.",
 };
 
 const s6: MatrixState = {
