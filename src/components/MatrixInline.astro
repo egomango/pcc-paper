@@ -4,20 +4,85 @@ interface Props {
 }
 const { stateIndex } = Astro.props;
 ---
-<svg class="inline-canvas matrix-inline" role="img" data-state-index={stateIndex}></svg>
+<div class="inline-canvas" data-state-index={stateIndex}>
+  <svg class="matrix-inline" role="img"></svg>
+  <div class="slide-card" hidden>
+    <div class="slide-caption"></div>
+    <div class="slide-annotation"></div>
+  </div>
+</div>
 
 <style>
+  .inline-canvas { display: none; margin: 1.5rem 0 0; }
+  @media (max-width: 1023px) { .inline-canvas { display: block; } }
+
   .matrix-inline { width: 100%; max-width: 560px; height: auto; display: none; }
-  @media (max-width: 1023px) { .matrix-inline { display: block; } }
+  .inline-canvas[data-mode="matrix"] .matrix-inline { display: block; }
+
+  .slide-card { display: none; }
+  .inline-canvas[data-mode="slide"] .slide-card {
+    display: block;
+    background: #f5f1ea;
+    padding: 1.5rem 1.5rem;
+    border-radius: 4px;
+  }
+  .slide-caption {
+    font-size: 1.125rem;
+    line-height: 1.3;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 0.75rem;
+  }
+  .slide-caption p { margin: 0 0 0.25rem 0; }
+  .slide-caption p:last-child { margin-bottom: 0; }
+  .slide-annotation {
+    font-size: 0.9375rem;
+    line-height: 1.55;
+    color: var(--text);
+  }
+  .slide-annotation p { margin: 0 0 0.75rem 0; }
+  .slide-annotation p:last-child { margin-bottom: 0; }
+  .slide-annotation strong { font-weight: 600; }
 </style>
 
 <script>
   import { STATES } from '~/scripts/states';
   import { createMatrix, applyState } from '~/scripts/matrix';
-  document.querySelectorAll<SVGSVGElement>('.matrix-inline').forEach((svg) => {
-    const i = Number(svg.getAttribute('data-state-index') ?? '0');
+
+  function renderParagraphs(el: HTMLElement, text: string | undefined): void {
+    el.replaceChildren();
+    if (!text) return;
+    for (const para of text.split(/\n{2,}/)) {
+      const p = document.createElement('p');
+      for (const part of para.split(/(\*\*[^*]+\*\*)/)) {
+        if (part.startsWith('**') && part.endsWith('**')) {
+          const strong = document.createElement('strong');
+          strong.textContent = part.slice(2, -2);
+          p.appendChild(strong);
+        } else if (part) {
+          p.appendChild(document.createTextNode(part));
+        }
+      }
+      el.appendChild(p);
+    }
+  }
+
+  document.querySelectorAll<HTMLElement>('.inline-canvas').forEach((wrap) => {
+    const i = Number(wrap.getAttribute('data-state-index') ?? '0');
     const state = STATES[i] ?? STATES[0];
-    createMatrix(svg, state);
-    applyState(svg, state, { animate: false });
+    if (state.hideMatrix) {
+      wrap.setAttribute('data-mode', 'slide');
+      const cap = wrap.querySelector<HTMLElement>('.slide-caption');
+      const ann = wrap.querySelector<HTMLElement>('.slide-annotation');
+      if (cap) renderParagraphs(cap, state.caption);
+      if (ann) renderParagraphs(ann, state.annotation);
+    } else {
+      wrap.setAttribute('data-mode', 'matrix');
+      const svg = wrap.querySelector<SVGSVGElement>('.matrix-inline');
+      if (svg) {
+        createMatrix(svg, state);
+        applyState(svg, state, { animate: false });
+      }
+    }
   });
 </script>

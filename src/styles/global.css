@@ -48,6 +48,9 @@ p { margin: 0 0 1rem 0; max-width: var(--measure); }
   justify-content: center;
   border-bottom: 1px solid var(--border);
 }
+.col-text section:last-of-type {
+  border-bottom: none;
+}
 
 .col-canvas {
   position: sticky;

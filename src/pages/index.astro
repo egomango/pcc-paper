@@ -23,4 +23,33 @@ const description =
     </div>
     <StickyCanvas />
   </main>
+  <footer class="page-footer">
+    <ul class="footer-links">
+      <li><a href="https://ssrn.com/abstract=6618399">Read on SSRN</a></li>
+      <li>DOI: <a href="https://doi.org/10.2139/ssrn.6618399">10.2139/ssrn.6618399</a></li>
+      <li>Licensed <a href="https://creativecommons.org/licenses/by/4.0/" rel="license">CC-BY 4.0</a></li>
+    </ul>
+  </footer>
 </Base>
+
+<style>
+  .page-footer {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 1.25rem 2rem 2rem;
+    border-top: 1px solid var(--border);
+    color: var(--mid);
+    font-size: 0.875rem;
+  }
+  .footer-links {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.5rem;
+  }
+  .footer-links li { margin: 0; }
+  .page-footer a { color: var(--mid); }
+  .page-footer a:hover { color: var(--text); }
+</style>

@@ -42,6 +42,7 @@ export function pickActiveByTriggerLine(
 }
 
 const TRIGGER_RATIO = 0.3;
+const NEAR_BOTTOM_PX = 80;
 
 export function observeSections(onChange: (index: number) => void): IntersectionObserver {
   let currentIndex = -1;
@@ -55,7 +56,12 @@ export function observeSections(onChange: (index: number) => void): Intersection
       index: Number(el.dataset.sectionIndex),
       top: el.getBoundingClientRect().top,
     }));
-    const next = pickActiveByTriggerLine(rects, triggerY);
+    let next = pickActiveByTriggerLine(rects, triggerY);
+    const docHeight = document.documentElement.scrollHeight;
+    const scrollBottom = window.scrollY + window.innerHeight;
+    if (docHeight - scrollBottom < NEAR_BOTTOM_PX && rects.length > 0) {
+      next = rects.reduce((acc, r) => (r.index > acc ? r.index : acc), -1);
+    }
     if (next !== null && next !== currentIndex) {
       currentIndex = next;
       onChange(next);
