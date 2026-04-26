@@ -22,4 +22,6 @@ The two run on different clocks. The customer's essential variables are buffered
 
 Founders consistently price destruction — feature parity, data migration, integration. They under-price exposure. Pilots rarely die on feature gaps; they die when exposure outruns customer tolerance before the product ramps.
 
+The operational consequence is to budget the two separately. Destruction is a roadmap problem — features, migration, integration. Exposure is a pilot-design problem — cutover length, parallel-run scope, which essential variables stay covered during the transition. Teams that conflate them ship features into a pilot that needed a structural redesign.
+
 Falsifier: holding destruction constant, higher-stakes essential variables should produce stronger switching resistance. If they don't, the decomposition fails.

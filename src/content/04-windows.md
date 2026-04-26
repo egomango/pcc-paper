@@ -16,4 +16,6 @@ The diagnostic is simple. Look where incumbents are straining at the edges of th
 
 The framework doesn't forecast which shifts will happen — that needs outside knowledge of technology, regulation, and markets. It gives you the condition an entrant has to satisfy once the shift is visible. Falsifier: once absolute quality is controlled, entrant success across cohorts should track whether the new product closes the cells the shift opened. If it doesn't, the claim fails.
 
+The operational consequence is concentration over speed. In an opening window, build narrowly into the row the incumbent now under-serves; don't spread effort across rows the incumbent still covers. Speed compounds only after you've identified the right cell.
+
 Doors are read, not waited for.
