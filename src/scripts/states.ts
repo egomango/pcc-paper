@@ -84,9 +84,9 @@ const s2: MatrixState = {
   cells: s2Cells,
   title: RUNNING_EXAMPLE,
   caption:
-    "Incumbent regulator only — public cloud hasn't entered the chart yet. Rows = disturbances, columns = regulators. Solid = covered, half = strained, empty = opening. 2 covered, 1 strained, 2 latent.",
+    "The customer's incumbent regulator: on-prem infrastructure. It handles stable workloads and scheduled batch work — those rows show full coverage. It's strained on spiky demand — half-filled. Geo-distributed access and elastic analytics aren't yet pressing on the business — empty.",
   annotation:
-    "The grid runs one example throughout: enterprise IT before the cloud transition. The bottom two rows — geo-distributed access, elastic analytics — exist in the partition but aren't yet load-bearing. They become the rows that open the window.",
+    "The bottom two rows aren't yet weighing on the business — geo-distributed access and elastic analytics exist as possibilities but no one is hiring them. The paper's claim is that these latent rows are where the window will eventually open. The example matrix is a snapshot of the regulator before that shift.",
 };
 
 const s3Cells = emptyGrid(5, 2);
@@ -105,9 +105,9 @@ const s3: MatrixState = {
   cells: s3Cells,
   title: RUNNING_EXAMPLE,
   caption:
-    "Mid-transition snapshot. Incumbent dimmed: dismantling in progress — destruction cost. New regulator at partial: not yet at full ramp. The exposure window is the *time* during which essential variables sit outside tolerance, not a third regulator.",
+    "Mid-transition. On-prem is dimmed because it's being dismantled — that's destruction cost. Public cloud is half-filled because it isn't yet at full ramp. The gap between them is the exposure window: time when neither regulator is fully covering what the business depends on.",
   annotation:
-    "Exposure-management practice — onboarding, parallel-run, staged rollout, SLA caps, \"no one ever got fired for buying IBM\" — is rational response to this window. Onboarding compresses exposure *width*; parallel-run bounds exposure *depth*; SLA tiers convert open-ended exposure into a priced option. These aren't vendor tactics or buyer psychology — they're structural responses to the two-component decomposition.",
+    "Practices that look like buyer psychology — onboarding, parallel-run, staged rollout, SLA caps, \"no one ever got fired for buying IBM\" — are structural responses to this picture. Onboarding shortens the exposure window. Parallel-run keeps the old regulator running so essential things stay covered. SLAs put a price on the exposure. None of it is irrational caution.",
 };
 
 const s4Cells = emptyGrid(5, 2);
@@ -122,9 +122,9 @@ const s4: MatrixState = {
   dShiftAt: 3,
   title: RUNNING_EXAMPLE,
   caption:
-    "Landscape drift activates the bottom rows: spiky/geo/elastic become load-bearing. The partition is the same; the weight on it shifted. The window opens where the incumbent's coverage runs out.",
+    "The landscape shifted: spiky demand, geo-distributed access, and elastic analytics became the rows that now matter most to the business. Public cloud covers all five rows; on-prem still doesn't reach the bottom two. The window is open exactly where the incumbent's coverage runs out.",
   annotation:
-    "Public cloud didn't win by replacing on-premises on the stable-workload axis. It won by closing the variety deficit on elasticity, geo-distribution, and elastic analytics — the rows the shift made load-bearing. Destruction was gradual, deferred to hardware refresh cycles. Exposure was hedged workload-by-workload: dev/test first, then customer-facing web tiers, then data and analytics, with systems of record often last.",
+    "Public cloud didn't win by beating on-prem on stable workloads — it won by covering the rows the shift made load-bearing. The on-prem column still has those top rows; what changed is which rows the business now depends on. Where the incumbent's coverage runs out is exactly where the new entrant has structural room.",
 };
 
 const s5Cells = emptyGrid(5, 2);
@@ -145,9 +145,9 @@ const s5: MatrixState = {
   ],
   title: RUNNING_EXAMPLE,
   caption:
-    "Numbered probes show migration order: low-stakes, low-destruction rows first; the incumbent's stronghold last. Each probe tested a hypothesis; the map updated; the next tightened.",
+    "The numbers show migration order: spiky workloads first, then geo-distributed access, then elastic analytics — the rows the incumbent already struggled on. Stable workloads and batch came last because they were on-prem's stronghold. Each numbered step was a hypothesis the team tested before the next.",
   annotation:
-    "Successful cloud migrations ran this loop with discipline — each workload chosen for what it would teach, each rollout sized to its exposure budget. Lift-and-shift skipped the loop, moved every workload in inventory order, paid destruction cost, and never reached convergence on the rows the shift had actually opened.",
+    "Successful cloud migrations ran this loop with discipline: each workload chosen for what the team would learn from it, each rollout sized to a survivable exposure budget. Lift-and-shift skipped the loop entirely, moved every workload in inventory order, paid full destruction cost, and never closed the rows the shift had actually opened.",
 };
 
 const s6: MatrixState = {
